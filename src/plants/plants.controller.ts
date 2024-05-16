@@ -1,10 +1,16 @@
-import { Body, Controller, Get, Param, Post, Query, Put } from '@nestjs/common';
 import {
-  CreatePlantDto,
-  ListAllEntities,
-  PlantDto,
-  UpdatePlantDto,
-} from './dto';
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  Put,
+  HttpException,
+  HttpStatus,
+  ParseIntPipe,
+} from '@nestjs/common';
+import { CreatePlantDto, ListAllEntities, UpdatePlantDto } from './dto';
 import { PlantsService } from './plants.service';
 import { Plant } from './interfaces';
 
@@ -20,12 +26,28 @@ export class PlantsController {
 
   @Get()
   async findAll(@Query() query: ListAllEntities): Promise<Plant[]> {
-    return this.plantService.findAll(query.limit);
+    try {
+      return this.plantService.findAll(query.limit);
+    } catch (error) {
+      throw new HttpException(
+        {
+          status: HttpStatus.BAD_REQUEST,
+          error: 'Something went wrong. :(',
+        },
+        HttpStatus.BAD_REQUEST,
+        {
+          cause: error,
+        },
+      );
+    }
+
+    // console.log(query);
+    // throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
   }
 
   @Get(':id')
-  findOne(@Param('id') params: any): string {
-    return `This action returns plant with id #${params.id}`;
+  findOne(@Param('id', ParseIntPipe) id: number): string {
+    return `This action returns plant with id #${id}`;
   }
 
   @Put(':id')
