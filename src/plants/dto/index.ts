@@ -1,6 +1,12 @@
+import { IsString, IsBoolean } from 'class-validator';
 export class PlantDto {
+  @IsString()
   name: string;
+
+  @IsBoolean()
   owned: boolean;
+
+  @IsString()
   location: string;
 }
 

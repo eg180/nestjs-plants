@@ -9,6 +9,7 @@ import {
   HttpException,
   HttpStatus,
   ParseIntPipe,
+  ValidationPipe,
 } from '@nestjs/common';
 import { CreatePlantDto, ListAllEntities, UpdatePlantDto } from './dto';
 import { PlantsService } from './plants.service';
@@ -20,12 +21,14 @@ import { Plant } from './interfaces';
 export class PlantsController {
   constructor(private plantService: PlantsService) {}
   @Post()
-  async create(@Body() createPlantDto: CreatePlantDto) {
+  async create(@Body(new ValidationPipe()) createPlantDto: CreatePlantDto) {
     this.plantService.create(createPlantDto);
   }
 
   @Get()
-  async findAll(@Query() query: ListAllEntities): Promise<Plant[]> {
+  async findAll(
+    @Query('limit', ParseIntPipe) query: ListAllEntities,
+  ): Promise<Plant[]> {
     try {
       return this.plantService.findAll(query.limit);
     } catch (error) {
