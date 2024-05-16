@@ -9,9 +9,12 @@ export class PlantsService {
     this.plants.push(plant);
   }
 
-  findAll(limit?: number): Plant[] {
-    console.log(limit);
+  findAll(limit: number = this.plantCount): Plant[] {
     return this.plants.slice(0, limit);
+  }
+
+  get plantCount() {
+    return this.plants.length;
   }
 }
 

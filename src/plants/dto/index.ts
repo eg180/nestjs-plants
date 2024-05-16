@@ -1,4 +1,4 @@
-import { IsString, IsBoolean } from 'class-validator';
+import { IsString, IsBoolean, IsOptional, IsNumber } from 'class-validator';
 export class PlantDto {
   @IsString()
   name: string;
@@ -15,5 +15,7 @@ export class CreatePlantDto extends PlantDto {}
 export class UpdatePlantDto implements Partial<PlantDto> {}
 
 export class ListAllEntities {
-  limit?: number;
+  @IsOptional()
+  @IsNumber()
+  limit: number;
 }

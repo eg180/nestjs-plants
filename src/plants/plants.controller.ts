@@ -27,7 +27,8 @@ export class PlantsController {
 
   @Get()
   async findAll(
-    @Query('limit', ParseIntPipe) query: ListAllEntities,
+    @Query()
+    query: ListAllEntities,
   ): Promise<Plant[]> {
     try {
       return this.plantService.findAll(query.limit);
