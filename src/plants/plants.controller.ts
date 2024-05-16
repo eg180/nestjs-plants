@@ -11,8 +11,10 @@ import {
   ParseIntPipe,
   ValidationPipe,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { CreatePlantDto, ListAllEntities, UpdatePlantDto } from './dto';
+import { LoggingInterceptor } from './logging.interceptor';
 import { PlantsService } from './plants.service';
 import { Plant } from './interfaces';
 import { RolesGuard } from 'src/roles.guard';
@@ -22,6 +24,7 @@ import { Roles, Role } from 'src/roles.decorator';
 
 @Controller('plants')
 @UseGuards(RolesGuard)
+@UseInterceptors(LoggingInterceptor)
 export class PlantsController {
   constructor(private plantService: PlantsService) {}
 
